@@ -212,9 +212,6 @@ func (c *Client) Fetch(ctx context.Context, input FetchRequest) (FetchResult, er
 		delay := c.backoff(attempt)
 		if retryAfter >= 0 {
 			delay = retryAfter
-			if delay > c.maxBackoff {
-				delay = c.maxBackoff
-			}
 		}
 		if err := c.sleep(ctx, delay); err != nil {
 			return result, err
@@ -270,7 +267,7 @@ func (c *Client) fetchAttempt(
 		return finish(), -1, nil
 	}
 	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
-		return finish(), parseRetryAfter(resp.Header.Get("Retry-After"), time.Now()), &HTTPStatusError{StatusCode: resp.StatusCode}
+		return finish(), parseRetryAfter(resp.Header.Get("Retry-After"), time.Now(), c.maxBackoff), &HTTPStatusError{StatusCode: resp.StatusCode}
 	}
 	if resp.ContentLength > c.maxBodyBytes {
 		return finish(), -1, ErrResponseTooLarge
@@ -411,21 +408,38 @@ func (c *Client) dialContext(dialer *net.Dialer) func(context.Context, string, s
 	}
 }
 
-func parseRetryAfter(raw string, now time.Time) time.Duration {
+func parseRetryAfter(raw string, now time.Time, maximum time.Duration) time.Duration {
 	raw = strings.TrimSpace(raw)
 	if raw == "" {
 		return -1
 	}
-	if seconds, err := strconv.Atoi(raw); err == nil {
+	if seconds, err := strconv.ParseInt(raw, 10, 64); err == nil {
 		if seconds < 0 {
 			return -1
 		}
-		return time.Duration(seconds) * time.Second
+		if maximum <= 0 {
+			return 0
+		}
+		maxSeconds := maximum / time.Second
+		if maximum%time.Second != 0 {
+			maxSeconds++
+		}
+		if seconds > int64(maxSeconds) {
+			return maximum
+		}
+		delay := time.Duration(seconds) * time.Second
+		if delay > maximum {
+			return maximum
+		}
+		return delay
 	}
 	if when, err := http.ParseTime(raw); err == nil {
 		delay := when.Sub(now)
 		if delay < 0 {
 			return 0
+		}
+		if delay > maximum {
+			return maximum
 		}
 		return delay
 	}
