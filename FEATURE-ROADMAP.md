@@ -2,14 +2,14 @@
 
 ## Status
 
-Lifecycle: Planned  
-Implementation: Not started beyond repository/documentation foundation.
+Lifecycle: Development  
+Implementation: Phase 0 toolchain/runtime foundation in progress; product feature phases remain incomplete.
 
 The authoritative product capability scope is maintained in the governed GoreeCloud Feeds roadmap. This file scopes server-owned implementation work.
 
 ## Phase 0 — Repository and governance foundation
 
-Establish truthful repository documentation, Platform Contract declaration, licensing identity, and implementation-status boundaries. Select the implementation stack through a documented technical decision before introducing runtime dependencies.
+**Partial / verified:** repository documentation, Platform Contract declaration, licensing identity, Go 1.27.1 server toolchain, minimal Development HTTP runtime, protocol capability endpoint, liveness/readiness endpoints, and CI validation are established. Persistence, authentication, packaging/deployment, and remaining Phase 0 acceptance work are still incomplete.
 
 ## Phase 1 — Core ingestion foundation
 
