@@ -33,13 +33,15 @@ Verified Development capabilities:
 - Internal bounded remote-feed retrieval client with HTTPS-by-default URL policy, embedded-credential rejection, explicit private-network allowlisting, DNS/IP destination validation, environment-proxy isolation, redirect revalidation, and HTTPS-downgrade blocking.
 - Conditional feed retrieval using ETag and Last-Modified validators, with cross-host redirect validator stripping to avoid leaking origin-specific cache metadata.
 - Bounded retrieval request/connect/header timeouts, response-body size, redirect count, and concurrent request count.
+- Bounded retry of transient HTTP/network failures using configurable attempt limits, exponential backoff, and bounded `Retry-After` handling.
+- Cross-origin redirect privacy hardening that removes conditional validators plus Authorization, Proxy-Authorization, Cookie, and Referer headers before following the redirect.
 
-The current HTTP runtime does not invoke the retrieval client, accept feed XML over an API, require PostgreSQL, or expose parser/deduplication/storage operations. The internal retrieval package can perform a bounded remote fetch when explicitly invoked, and the internal storage package can connect, migrate, and durably persist/read the supported core records when explicitly invoked. CI validates these components independently. Scheduler/queue/retry/history integration and server-runtime database wiring remain incomplete.
+The current HTTP runtime does not invoke the retrieval client, accept feed XML over an API, require PostgreSQL, or expose parser/deduplication/storage operations. The internal retrieval package can perform a bounded remote fetch when explicitly invoked, and the internal storage package can connect, migrate, and durably persist/read the supported core records when explicitly invoked. CI validates these components independently. Scheduler/queue/adaptive-refresh/priority/history integration and server-runtime database wiring remain incomplete.
 
 ## Planned capability groups
 
 - Feed subscription persistence and management — **Partial / core relationship persistence only**
-- Scheduled feed retrieval — **Partial / bounded retrieval transport only**
+- Scheduled feed retrieval — **Partial / bounded retrieval transport + transient retry/backoff primitives only**
 - Feed parsing and normalization — **Partial / Development**
 - Article processing and deduplication — **Partial / Development**
 - Article and metadata storage — **Partial / Development durable core repository**
