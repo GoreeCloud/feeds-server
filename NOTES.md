@@ -6,9 +6,11 @@
 - Governed repository documentation foundation is established.
 - Initial server toolchain is Go 1.27.1.
 - Minimal Development HTTP runtime is implemented.
+- Core normalized User, Subscription, Feed, Article, and ArticleState models are implemented.
+- Dependency-free RSS 2.x and Atom 1.x parsing/normalization is implemented for caller-supplied XML with bounded parsing and recoverable warnings.
 - Development API contract is `0.1.0-dev` and owned by GoreeCloud/feeds-protocol.
 - Implemented routes are `GET /api/v1/capabilities`, `GET /health/live`, and `GET /health/ready`.
-- No persistent datastore, feed ingestion, authentication, synchronization, package, deployment, or release exists.
+- No persistent datastore, network feed retrieval/ingestion service, authenticated parser/API exposure, synchronization, package, deployment, or release exists.
 
 ## Governing relationships
 
@@ -20,4 +22,4 @@
 
 ## Pending technical decisions
 
-Persistent database/storage model; search implementation; scheduling/background jobs; feed parser/library strategy; authentication/session integration; packaging/containerization; deployment topology; backup/restore mechanics; and production network configuration.
+Persistent database/storage model; search implementation; scheduling/background jobs; remote retrieval strategy; HTML sanitization policy; subscription ownership/persistence; authentication/session integration; packaging/containerization; deployment topology; backup/restore mechanics; and production network configuration.
