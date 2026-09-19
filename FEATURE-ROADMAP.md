@@ -17,7 +17,7 @@ The authoritative product capability scope is maintained in the governed GoreeCl
 
 **Partial / verified:** conservative internal article deduplication now recognizes duplicates only when source-scoped exact evidence agrees: source identifiers, conservatively normalized URLs, or title/publication/content fingerprints. Conflicting evidence fails safe by retaining the article. Fuzzy similarity and cross-source collapsing remain deferred.
 
-Still incomplete: subscription persistence/ownership enforcement, network feed retrieval, scheduling, retry/backoff, conditional requests, fetch history, durable deduplication indexes, persistence, HTML sanitization, authenticated ingestion/API surfaces, and production acceptance.
+Still incomplete: subscription runtime persistence/ownership enforcement, network feed retrieval, scheduling, retry/backoff, conditional requests, fetch history, live durable deduplication/storage execution, HTML sanitization, authenticated ingestion/API surfaces, and production acceptance.
 
 ## Phase 2 — Persistence and processing
 
