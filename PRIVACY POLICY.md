@@ -15,7 +15,8 @@ It:
 - does not make outbound feed requests;
 - includes an internal parser that processes only caller-supplied XML in memory and does not persist or transmit parsed content;
 - includes internal in-memory deduplication that processes only normalized article metadata/content supplied by the caller and does not persist or transmit it;
-- contains a PostgreSQL schema/migration foundation but has no database connection, database credentials, or persisted Feeds user/article data; and
+- contains a PostgreSQL schema plus an internal database connectivity/migration layer; the network-visible server runtime does not invoke it and no Feeds user/article product data is persisted yet;
+- PostgreSQL integration tests use only synthetic CI data and ephemeral CI-only credentials; and
 - exposes only static non-sensitive capability metadata plus liveness/readiness responses.
 
 The Development listener binds to loopback by default.
