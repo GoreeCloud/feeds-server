@@ -22,8 +22,12 @@ Verified Development capabilities:
 - PostgreSQL 18 schema/migration foundation with ordered embedded migration discovery and validation.
 - Initial relational schema for users, feeds, subscriptions, articles, persistent deduplication identity keys, article source history, and independent per-user article state.
 - Schema constraints for referential integrity, read-position range, SHA-256 fingerprint format, preserved user state, and source-scoped deduplication keys.
+- Bounded pgx v5.11.0 PostgreSQL connection pool with explicit ping verification and application naming.
+- Transactional migration application serialized by advisory transaction lock.
+- Checksum/name-verified migration ledger that rejects drift in previously applied migration source.
+- PostgreSQL 18.6 CI integration validation, including migration idempotence and schema/ledger readback.
 
-The current HTTP runtime does not retrieve feeds, accept feed XML over an API, connect to PostgreSQL, store user/feed/article data, or expose parser/deduplication output. Parser and deduplication functionality exist only as internal Development libraries; the PostgreSQL migration is source/schema evidence only and has not been applied to a live Feeds database.
+The current HTTP runtime does not retrieve feeds, accept feed XML over an API, require PostgreSQL, store user/feed/article data, or expose parser/deduplication output. The internal storage package can connect to PostgreSQL and apply migrations when explicitly invoked; CI validates this against an ephemeral PostgreSQL 18.6 service. Durable application repositories and server-runtime database wiring remain incomplete.
 
 ## Planned capability groups
 
@@ -31,7 +35,7 @@ The current HTTP runtime does not retrieve feeds, accept feed XML over an API, c
 - Scheduled feed retrieval
 - Feed parsing and normalization — **Partial / Development**
 - Article processing and deduplication — **Partial / Development**
-- Article and metadata storage — **Partial / Development schema foundation only**
+- Article and metadata storage — **Partial / Development schema + connectivity foundation**
 - Search
 - Smart Feeds
 - Rules engine
