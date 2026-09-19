@@ -17,7 +17,9 @@ The authoritative product capability scope is maintained in the governed GoreeCl
 
 **Partial / verified:** conservative internal article deduplication now recognizes duplicates only when source-scoped exact evidence agrees: source identifiers, conservatively normalized URLs, or title/publication/content fingerprints. Conflicting evidence fails safe by retaining the article. Fuzzy similarity and cross-source collapsing remain deferred.
 
-Still incomplete: full per-feed settings/history/folder/tag persistence, network feed retrieval, scheduling, retry/backoff, conditional requests, HTML sanitization, authenticated ingestion/API surfaces, and production acceptance.
+**Partial / verified:** a bounded internal remote-feed retrieval transport is implemented with HTTPS-by-default policy, explicit private-network allowlisting, DNS/IP destination checks, proxy isolation, redirect revalidation, HTTPS-downgrade blocking, conditional ETag/Last-Modified requests, body/time limits, and bounded concurrency.
+
+Still incomplete: full per-feed settings/history/folder/tag persistence, retrieval scheduling/queueing, adaptive refresh, priority refresh, retry/backoff, fetch-history and last-success persistence, end-to-end retrieval→parse→deduplicate→persist orchestration, HTML sanitization, authenticated ingestion/API surfaces, and production acceptance.
 
 ## Phase 2 — Persistence and processing
 
