@@ -6,7 +6,7 @@ GoreeCloud Feeds Server is the authoritative back-end project for GoreeCloud Fee
 
 **Lifecycle:** Development.
 
-The repository contains a minimal verified Development runtime written in Go plus internal normalized feed/article models, RSS/Atom parsing, conservative article deduplication, and a version-controlled PostgreSQL schema/migration foundation. The network-visible runtime surface remains intentionally limited to:
+The repository contains a minimal verified Development runtime written in Go plus internal normalized feed/article models, RSS/Atom parsing, conservative article deduplication, a bounded outbound feed-retrieval transport, and a version-controlled PostgreSQL schema/migration foundation. The network-visible runtime surface remains intentionally limited to:
 
 - `GET /api/v1/capabilities` — non-sensitive Development protocol/capability metadata;
 - `GET /health/live` — process liveness;
@@ -18,7 +18,9 @@ Article deduplication is also partially implemented as an internal dependency-fr
 
 ADR-0002 selects PostgreSQL 18 for durable persistence. The repository contains ordered embedded SQL migrations, a bounded pgx v5.11.0 connection-pool/migration layer, and an internal durable repository layer for core user references, feeds, subscriptions, canonical articles, source-scoped deduplication keys/source history, and per-user article state. Article writes, identity-key checks, and source-history writes share one PostgreSQL transaction. The storage package is integration-tested against PostgreSQL 18.6, but the network-visible Feeds Server runtime is not yet wired to require or use a database.
 
-Server-runtime database wiring, network feed retrieval, full subscription settings, article categories/tags/media/image persistence, retention execution, search, synchronization, accounts/authentication, administration, notifications, backup/restore, packaging, deployment, Release Candidate, production acceptance, and Stable release remain **not** implemented.
+The internal retrieval package now provides the first bounded remote-feed transport primitive. It defaults to HTTPS, rejects credential-bearing URLs, denies private/loopback/link-local/special-use destinations unless explicitly allowlisted, validates every resolved address before dialing, disables environment-proxy inheritance, revalidates redirects, blocks HTTPS-to-HTTP downgrade redirects, strips conditional validators on cross-host redirects, supports ETag/Last-Modified conditional retrieval, applies request/connect/header/body limits, and bounds concurrent requests. It is not yet wired into a scheduler, subscription workflow, fetch-history store, parser pipeline, or public API.
+
+Server-runtime database wiring, retrieval scheduling/queueing/retry/backoff/history integration, full subscription settings, article categories/tags/media/image persistence, retention execution, search, synchronization, accounts/authentication, administration, notifications, backup/restore, packaging, deployment, Release Candidate, production acceptance, and Stable release remain **not** implemented.
 
 ## Development toolchain
 
@@ -26,13 +28,14 @@ Server-runtime database wiring, network feed retrieval, full subscription settin
 - Go standard-library `net/http`
 - Go standard-library `encoding/xml` for the current RSS/Atom parser tranche
 - Go standard-library cryptographic hashing and URL handling for conservative deduplication
+- Go standard-library `net/http`, `net`, `net/netip`, TLS, and DNS/dial controls for bounded feed retrieval
 - Go standard-library testing
 - PostgreSQL 18 Development schema target with ordered SQL migrations
 - pgx v5.11.0 for PostgreSQL connectivity and bounded pooling
 - GitHub Actions validation on exact pull-request candidates
 - Development API contract version `0.1.0-dev` owned by GoreeCloud/feeds-protocol
 
-pgx v5.11.0 is the only new Go runtime dependency in the connectivity tranche. PostgreSQL 18.6 is exercised in CI, while the current network-visible Development server still runs without a database because durable repository wiring is a later tranche.
+pgx v5.11.0 remains the only added Go runtime dependency; the retrieval tranche adds no third-party runtime dependency. PostgreSQL 18.6 is exercised in CI, while the current network-visible Development server still runs without a database and does not invoke the retrieval client.
 
 ## Development run
 
