@@ -2,6 +2,18 @@
 
 ## Unreleased
 
+### PostgreSQL connectivity and migration-execution Development tranche
+
+- Added pgx v5.11.0 as the pinned PostgreSQL Go dependency.
+- Added a bounded connection pool with explicit connectivity verification and GoreeCloud Feeds application naming.
+- Added transactional migration execution serialized by a PostgreSQL advisory transaction lock.
+- Added a migration ledger that records version, filename, SHA-256 checksum, and application time and rejects applied-source drift.
+- Added PostgreSQL 18.6 integration validation for connectivity, migration application, ledger integrity, and idempotence.
+- Added module-lock verification to exact-candidate CI.
+- Added DEPENDENCIES.md with PostgreSQL/pgx Role, Purpose, security, recovery, failure, ownership, and replacement boundaries.
+- Kept server-runtime DB wiring, durable product repositories/data writes, production credentials/TLS policy, backup/restore, deployment, and Stable qualification incomplete.
+
+
 ### PostgreSQL schema/migration Development tranche
 
 - Adopted the ADR-0002 PostgreSQL 18 Development persistence boundary.
