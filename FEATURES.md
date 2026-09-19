@@ -26,16 +26,20 @@ Verified Development capabilities:
 - Transactional migration application serialized by advisory transaction lock.
 - Checksum/name-verified migration ledger that rejects drift in previously applied migration source.
 - PostgreSQL 18.6 CI integration validation, including migration idempotence and schema/ledger readback.
+- Durable PostgreSQL repository writes for external identity references, feeds, subscriptions, canonical articles, source-scoped deduplication keys, article source history, and per-user read/saved/favorite/preserved/read-position state.
+- Transactional article persistence that rolls back the whole candidate when article identity, feed ownership, deduplication keys, or source-history identifiers conflict.
+- Durable article/state readback for the currently supported core schema.
+- Fail-closed rejection of categories, tags, media, and images until a later migration adds those storage structures rather than silently discarding them.
 
-The current HTTP runtime does not retrieve feeds, accept feed XML over an API, require PostgreSQL, store user/feed/article data, or expose parser/deduplication output. The internal storage package can connect to PostgreSQL and apply migrations when explicitly invoked; CI validates this against an ephemeral PostgreSQL 18.6 service. Durable application repositories and server-runtime database wiring remain incomplete.
+The current HTTP runtime does not retrieve feeds, accept feed XML over an API, require PostgreSQL, or expose parser/deduplication/storage operations. The internal storage package can connect, migrate, and durably persist/read the supported core records when explicitly invoked; CI validates these operations against an ephemeral PostgreSQL 18.6 service. Server-runtime database wiring remains incomplete.
 
 ## Planned capability groups
 
-- Feed subscription persistence and management
+- Feed subscription persistence and management — **Partial / core relationship persistence only**
 - Scheduled feed retrieval
 - Feed parsing and normalization — **Partial / Development**
 - Article processing and deduplication — **Partial / Development**
-- Article and metadata storage — **Partial / Development schema + connectivity foundation**
+- Article and metadata storage — **Partial / Development durable core repository**
 - Search
 - Smart Feeds
 - Rules engine
