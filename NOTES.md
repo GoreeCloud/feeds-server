@@ -3,10 +3,12 @@
 ## Verified repository state
 
 - Repository exists and uses main.
-- Before this foundation change, the repository contained only its initial README.
-- No runtime implementation has been verified.
-- No implementation stack has been selected.
-- No release or deployment exists.
+- Governed repository documentation foundation is established.
+- Initial server toolchain is Go 1.27.1.
+- Minimal Development HTTP runtime is implemented.
+- Development API contract is `0.1.0-dev` and owned by GoreeCloud/feeds-protocol.
+- Implemented routes are `GET /api/v1/capabilities`, `GET /health/live`, and `GET /health/ready`.
+- No persistent datastore, feed ingestion, authentication, synchronization, package, deployment, or release exists.
 
 ## Governing relationships
 
@@ -18,4 +20,4 @@
 
 ## Pending technical decisions
 
-Runtime language/framework; persistent database/storage model; search implementation; scheduling/background jobs; feed parser/library strategy; API transport/wire format; authentication/session integration; packaging/containerization; deployment topology; backup/restore mechanics; and test/CI toolchain.
+Persistent database/storage model; search implementation; scheduling/background jobs; feed parser/library strategy; authentication/session integration; packaging/containerization; deployment topology; backup/restore mechanics; and production network configuration.
