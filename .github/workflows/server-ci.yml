@@ -12,6 +12,22 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:18.6
+        env:
+          POSTGRES_USER: feeds_ci
+          POSTGRES_PASSWORD: feeds_ci_only_password
+          POSTGRES_DB: feeds_ci
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U feeds_ci -d feeds_ci"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      FEEDS_TEST_DATABASE_URL: postgres://feeds_ci:feeds_ci_only_password@127.0.0.1:5432/feeds_ci?sslmode=disable
     steps:
       - name: Check out repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -20,6 +36,11 @@ jobs:
         with:
           go-version: "1.27.1"
           cache: false
+      - name: Verify module lock
+        run: |
+          go mod tidy
+          git diff --exit-code -- go.mod go.sum
+          go mod verify
       - name: Check formatting
         run: test -z "$(gofmt -l .)"
       - name: Vet
