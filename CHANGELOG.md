@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+### PostgreSQL storage schema Development tranche
+
+- Added additive PostgreSQL 18-compatible migration `0001_initial.sql`.
+- Added schema boundaries for feeds, subscriptions, canonical articles, source-scoped deduplication aliases, retrieval/source history, per-user article state, categories/tags, and media/image references.
+- Added retention and preservation schema fields without claiming retention execution.
+- Kept GoreeCloud Identity authoritative by storing external user references rather than local authentication secrets/accounts.
+- Added static migration tests for required tables/boundaries, additive behavior, application-owned textual IDs, and content/user-state separation.
+- Added `STORAGE.md` with database Role/Purpose, ownership, security, recovery, and current limitations.
+- Kept PostgreSQL driver/connectivity, applied migrations, runtime writes/reads, credentials, backup/restore, deployment, and Stable qualification explicitly incomplete.
+
+
 ### Article deduplication Development tranche
 
 - Added dependency-free in-memory article deduplication.
