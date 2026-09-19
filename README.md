@@ -6,7 +6,7 @@ GoreeCloud Feeds Server is the authoritative back-end project for GoreeCloud Fee
 
 **Lifecycle:** Development.
 
-The repository contains a minimal verified Development runtime written in Go plus internal normalized feed/article models, RSS/Atom parsing, and conservative article deduplication. The network-visible runtime surface remains intentionally limited to:
+The repository contains a minimal verified Development runtime written in Go plus internal normalized feed/article models, RSS/Atom parsing, conservative article deduplication, and a version-controlled PostgreSQL schema/migration foundation. The network-visible runtime surface remains intentionally limited to:
 
 - `GET /api/v1/capabilities` — non-sensitive Development protocol/capability metadata;
 - `GET /health/live` — process liveness;
@@ -16,7 +16,7 @@ Feed parsing and normalization are partially implemented as an internal, depende
 
 Article deduplication is also partially implemented as an internal dependency-free library. The current tranche preserves the first article as canonical and recognizes duplicates only when exact source-scoped evidence agrees: normalized source identifiers, conservatively normalized URLs, or a title/publication/content fingerprint. If independent evidence points to different canonical articles, the candidate is retained rather than merged. Fuzzy similarity and cross-source collapsing are intentionally deferred.
 
-Feed subscriptions, network retrieval, persistence, search, synchronization, accounts, authentication, administration, notifications, backup/restore, packaging, deployment, Release Candidate, production acceptance, and Stable release remain **not** implemented.
+ADR-0002 selects PostgreSQL 18 for durable persistence. The repository now contains ordered embedded SQL migration source defining the initial relational boundary for users, feeds, subscriptions, articles, deduplication keys/source history, and per-user article state. No PostgreSQL driver, database connection, migration executor, credentials, persisted runtime data, or backup/restore implementation exists yet.\n\nFeed subscription runtime persistence, network retrieval, search, synchronization, accounts/authentication, administration, notifications, backup/restore, packaging, deployment, Release Candidate, production acceptance, and Stable release remain **not** implemented.
 
 ## Development toolchain
 
@@ -24,11 +24,11 @@ Feed subscriptions, network retrieval, persistence, search, synchronization, acc
 - Go standard-library `net/http`
 - Go standard-library `encoding/xml` for the current RSS/Atom parser tranche
 - Go standard-library cryptographic hashing and URL handling for conservative deduplication
-- Go standard-library testing
+- Go standard-library testing\n- PostgreSQL 18 Development schema target with ordered SQL migrations
 - GitHub Actions validation on exact pull-request candidates
 - Development API contract version `0.1.0-dev` owned by GoreeCloud/feeds-protocol
 
-No external Go runtime dependency is used in the current server/parser/deduplication tranche.
+No external Go runtime dependency is used in the current server/parser/deduplication/schema-foundation tranche. PostgreSQL 18 is an accepted Development persistence target, not yet a runtime dependency.
 
 ## Development run
 
