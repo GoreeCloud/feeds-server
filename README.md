@@ -1,25 +1,61 @@
 # GoreeCloud Feeds Server
 
-GoreeCloud Feeds Server is the planned authoritative back end for GoreeCloud Feeds.
+GoreeCloud Feeds Server is the authoritative back-end project for GoreeCloud Feeds.
 
 ## Current state
 
-**Lifecycle:** Planned / repository foundation.
+**Lifecycle:** Development.
 
-This repository currently establishes project documentation only. It does not yet contain a verified server runtime, API implementation, database schema, feed scheduler, parser, search engine, synchronization engine, packaged artifact, deployment, Release Candidate, production deployment, or Stable release.
+The repository now contains a minimal verified Development runtime written in Go. The implemented surface is intentionally limited to:
+
+- `GET /api/v1/capabilities` — non-sensitive Development protocol/capability metadata;
+- `GET /health/live` — process liveness;
+- `GET /health/ready` — readiness for the current dependency-free Development tranche.
+
+Feed subscriptions, retrieval, parsing, persistence, search, synchronization, accounts, authentication, administration, notifications, backup/restore, packaging, deployment, Release Candidate, production acceptance, and Stable release are **not** implemented by this tranche.
+
+## Development toolchain
+
+- Go 1.27.1
+- Go standard-library `net/http`
+- Go standard-library testing
+- GitHub Actions validation on exact pull-request candidates
+- Development API contract version `0.1.0-dev` owned by GoreeCloud/feeds-protocol
+
+No external Go runtime dependency is used in this first server tranche.
+
+## Development run
+
+From the repository root:
+
+```sh
+go run ./cmd/feeds-server
+```
+
+The Development runtime binds to `127.0.0.1:8080` by default. An alternate development address may be supplied with `-listen`.
+
+Example non-sensitive checks:
+
+```sh
+curl http://127.0.0.1:8080/health/live
+curl http://127.0.0.1:8080/health/ready
+curl http://127.0.0.1:8080/api/v1/capabilities
+```
+
+These commands are Development entry points, not production deployment instructions.
 
 ## Planned responsibilities
 
 The server is intended to own feed retrieval and scheduling, parsing and normalization, article processing and deduplication, storage, search, rules and Smart Feeds, notifications, media caching, user accounts, synchronization, administration, feed health, backup and restore, and the server API.
 
-The server is intended to remain authoritative for server-side feed ingestion, processed article state, account-scoped server data, and synchronization state exposed to clients through the shared GoreeCloud Feeds protocol.
+The server remains intended to be authoritative for server-side feed ingestion, processed article state, account-scoped server data, and synchronization state exposed to clients through the shared GoreeCloud Feeds protocol.
 
 ## Repository relationships
 
 - GoreeCloud/feeds — project-wide coordination and roadmap.
-- GoreeCloud/feeds-protocol — planned shared client/server contracts.
-- GoreeCloud/feeds-shared — planned genuinely reusable internal code.
-- GoreeCloud/feeds-web — planned Glaze UI web client.
+- GoreeCloud/feeds-protocol — shared client/server contract authority.
+- GoreeCloud/feeds-shared — reusable implementation only when genuine reuse exists.
+- GoreeCloud/feeds-web — Glaze UI web client.
 
 ## Documentation
 
@@ -27,7 +63,7 @@ See SPECIFICATIONS.md, FEATURES.md, FEATURE-ROADMAP.md, BENEFITS.md, COMPETITIVE
 
 ## Platform integration
 
-The repository declares GoreeCloud Platform Contract schema 0.4 in goreecloud.platform.yaml. All product-specific platform integrations remain blocked/planned until implementation and acceptance evidence exists.
+The repository declares GoreeCloud Platform Contract schema 0.4 in goreecloud.platform.yaml. Product-specific platform integrations remain blocked until implementation and acceptance evidence exists.
 
 ## License
 
