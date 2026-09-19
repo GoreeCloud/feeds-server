@@ -30,13 +30,16 @@ Verified Development capabilities:
 - Transactional article persistence that rolls back the whole candidate when article identity, feed ownership, deduplication keys, or source-history identifiers conflict.
 - Durable article/state readback for the currently supported core schema.
 - Fail-closed rejection of categories, tags, media, and images until a later migration adds those storage structures rather than silently discarding them.
+- Internal bounded remote-feed retrieval client with HTTPS-by-default URL policy, embedded-credential rejection, explicit private-network allowlisting, DNS/IP destination validation, environment-proxy isolation, redirect revalidation, and HTTPS-downgrade blocking.
+- Conditional feed retrieval using ETag and Last-Modified validators, with cross-host redirect validator stripping to avoid leaking origin-specific cache metadata.
+- Bounded retrieval request/connect/header timeouts, response-body size, redirect count, and concurrent request count.
 
-The current HTTP runtime does not retrieve feeds, accept feed XML over an API, require PostgreSQL, or expose parser/deduplication/storage operations. The internal storage package can connect, migrate, and durably persist/read the supported core records when explicitly invoked; CI validates these operations against an ephemeral PostgreSQL 18.6 service. Server-runtime database wiring remains incomplete.
+The current HTTP runtime does not invoke the retrieval client, accept feed XML over an API, require PostgreSQL, or expose parser/deduplication/storage operations. The internal retrieval package can perform a bounded remote fetch when explicitly invoked, and the internal storage package can connect, migrate, and durably persist/read the supported core records when explicitly invoked. CI validates these components independently. Scheduler/queue/retry/history integration and server-runtime database wiring remain incomplete.
 
 ## Planned capability groups
 
 - Feed subscription persistence and management — **Partial / core relationship persistence only**
-- Scheduled feed retrieval
+- Scheduled feed retrieval — **Partial / bounded retrieval transport only**
 - Feed parsing and normalization — **Partial / Development**
 - Article processing and deduplication — **Partial / Development**
 - Article and metadata storage — **Partial / Development durable core repository**

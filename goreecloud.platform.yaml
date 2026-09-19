@@ -36,12 +36,12 @@ platform_systems:
     result: applicable-blocked
     version: null
     evidence: [PRIVACY POLICY.md, SPECIFICATIONS.md]
-    notes: The network-visible Development runtime remains non-data-bearing. Internal parser code processes caller-supplied XML in memory only. No runtime Privacy Shield integration or acceptance exists.
+    notes: The network-visible Development runtime remains non-data-bearing. Internal parser code processes caller-supplied XML in memory, and the bounded retrieval client minimizes ambient credentials/proxy use and cross-host validator disclosure. No runtime Privacy Shield integration or acceptance exists.
   wardveil_security:
     result: applicable-blocked
     version: null
-    evidence: [SECURITY.md, SPECIFICATIONS.md, internal/server/server.go, internal/feed/parser.go, internal/feed/parser_test.go, internal/feed/dedup.go, internal/feed/dedup_test.go, internal/storage/postgres/migrations/0001_initial.sql, internal/storage/postgres/migrations.go, internal/storage/postgres/migrations_test.go]
-    notes: Initial safe-by-default Development HTTP behavior, bounded XML parsing controls, and conflict-safe conservative deduplication exist, but no Wardveil Security runtime integration or acceptance exists.
+    evidence: [SECURITY.md, SPECIFICATIONS.md, internal/server/server.go, internal/feed/parser.go, internal/feed/parser_test.go, internal/feed/dedup.go, internal/feed/dedup_test.go, internal/retrieval/policy.go, internal/retrieval/client.go, internal/retrieval/client_test.go, internal/storage/postgres/migrations/0001_initial.sql, internal/storage/postgres/migrations.go, internal/storage/postgres/migrations_test.go]
+    notes: Initial safe-by-default Development HTTP behavior, bounded XML parsing, conflict-safe conservative deduplication, and SSRF-aware bounded retrieval controls exist, but no Wardveil Security runtime integration or acceptance exists.
   everkeep:
     result: applicable-blocked
     version: null
@@ -121,6 +121,7 @@ evidence:
     - internal/server/server_test.go
     - internal/feed/parser_test.go
     - internal/feed/dedup_test.go
+    - internal/retrieval/client_test.go
     - internal/storage/postgres/migrations_test.go
     - internal/storage/postgres/store_test.go
     - internal/storage/postgres/repository_test.go
@@ -129,9 +130,9 @@ evidence:
 conformance:
   status: nonconformant
   validated_at: null
-  evidence: [README.md, SPECIFICATIONS.md, FEATURES.md, SECURITY.md, PRIVACY POLICY.md, DEPENDENCIES.md, cmd/feeds-server/main.go, internal/server/server.go, internal/server/server_test.go, internal/feed/model.go, internal/feed/parser.go, internal/feed/parser_test.go, internal/feed/dedup.go, internal/feed/dedup_test.go, internal/storage/postgres/migrations.go, internal/storage/postgres/migrations_test.go, internal/storage/postgres/store.go, internal/storage/postgres/apply.go, internal/storage/postgres/store_test.go, internal/storage/postgres/repository.go, internal/storage/postgres/repository_test.go]
+  evidence: [README.md, SPECIFICATIONS.md, FEATURES.md, SECURITY.md, PRIVACY POLICY.md, DEPENDENCIES.md, cmd/feeds-server/main.go, internal/server/server.go, internal/server/server_test.go, internal/feed/model.go, internal/feed/parser.go, internal/feed/parser_test.go, internal/feed/dedup.go, internal/feed/dedup_test.go, internal/retrieval/policy.go, internal/retrieval/client.go, internal/retrieval/client_test.go, internal/storage/postgres/migrations.go, internal/storage/postgres/migrations_test.go, internal/storage/postgres/store.go, internal/storage/postgres/apply.go, internal/storage/postgres/store_test.go, internal/storage/postgres/repository.go, internal/storage/postgres/repository_test.go]
   blockers:
-    - Current Development runtime implements capability discovery and health endpoints; internal feed/article models and RSS/Atom parsing are partial Development capabilities. Network retrieval/ingestion, server-runtime PostgreSQL wiring, complete metadata/subscription persistence, search, synchronization, administration, authentication, packaging, and deployment remain incomplete.
+    - Current Development runtime implements capability discovery and health endpoints; internal feed/article models, RSS/Atom parsing, conservative deduplication, and a bounded retrieval transport are partial Development capabilities. Retrieval scheduler/queue/retry/history orchestration and ingestion wiring, server-runtime PostgreSQL wiring, complete metadata/subscription persistence, search, synchronization, administration, authentication, packaging, and deployment remain incomplete.
     - GoreeCloud Identity integration and acceptance are not established for protected product APIs.
     - Wardveil Security integration and acceptance are not established.
     - Privacy Shield integration and acceptance are not established.
