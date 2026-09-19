@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+### Article deduplication Development tranche
+
+- Added dependency-free in-memory article deduplication.
+- Added source-scoped identifier matching.
+- Added conservative URL normalization and source-scoped normalized-URL matching.
+- Added source-scoped SHA-256 title/publication/content fingerprints.
+- Preserved the first article as canonical and registered duplicate aliases for later publisher identifier/URL changes.
+- Added conflict-safe behavior that retains a candidate when independent evidence points to different canonical articles.
+- Added tests for source identifiers, source isolation, URL normalization, metadata/content fingerprints, alias propagation, conflicting evidence, insufficient fingerprint evidence, and missing source scope.
+- Kept fuzzy similarity, cross-source collapsing, persistence, durable indexes, network retrieval, authenticated API exposure, deployment, and Stable qualification explicitly incomplete.
+
 ### Feed model and parser Development tranche
 
 - Added normalized User, Subscription, Feed, Article, ArticleState, media/image, and source models.
@@ -10,7 +21,7 @@
 - Added recoverable warnings for incomplete/malformed metadata where usable content remains.
 - Added XML DTD/entity rejection and depth/node complexity bounds.
 - Added tests for RSS normalization, Atom normalization, partial records, malformed dates, unsafe directives, complexity limits, and user-state separation.
-- Kept network retrieval, persistence, deduplication, HTML sanitization, authenticated parser/API exposure, deployment, and Stable qualification explicitly incomplete.
+- Kept network retrieval, persistence, HTML sanitization, authenticated parser/API exposure, deployment, and Stable qualification explicitly incomplete.
 
 ### Initial Development runtime
 
