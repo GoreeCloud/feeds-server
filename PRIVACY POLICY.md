@@ -13,7 +13,8 @@ It:
 - does not emit product telemetry;
 - does not call third-party analytics services;
 - does not make outbound feed requests;
-- includes an internal parser that processes only caller-supplied XML in memory and does not persist or transmit parsed content; and
+- includes an internal parser that processes only caller-supplied XML in memory and does not persist or transmit parsed content;
+- includes internal in-memory deduplication that processes only normalized article metadata/content supplied by the caller and does not persist or transmit it; and
 - exposes only static non-sensitive capability metadata plus liveness/readiness responses.
 
 The Development listener binds to loopback by default.
