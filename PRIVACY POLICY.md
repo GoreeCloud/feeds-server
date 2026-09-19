@@ -15,7 +15,9 @@ It:
 - does not make outbound feed requests;
 - includes an internal parser that processes only caller-supplied XML in memory and does not persist or transmit parsed content;
 - includes internal in-memory deduplication that processes only normalized article metadata/content supplied by the caller and does not persist or transmit it;
-- contains a PostgreSQL schema plus an internal database connectivity/migration layer; the network-visible server runtime does not invoke it and no Feeds user/article product data is persisted yet;
+- contains a PostgreSQL schema, connectivity/migration layer, and internal durable repository methods for the supported core records; the network-visible server runtime still does not invoke those methods;
+- core persistence keeps shared feed/article content separate from user-owned subscription/article state;
+- unsupported categories/tags/media/images are rejected rather than silently dropped;
 - PostgreSQL integration tests use only synthetic CI data and ephemeral CI-only credentials; and
 - exposes only static non-sensitive capability metadata plus liveness/readiness responses.
 
