@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+### Feed model and parser Development tranche
+
+- Added normalized User, Subscription, Feed, Article, ArticleState, media/image, and source models.
+- Kept shared feed/article content separate from per-user article state.
+- Added dependency-free RSS 2.x and Atom 1.x parsing using the Go standard library.
+- Added recoverable warnings for incomplete/malformed metadata where usable content remains.
+- Added XML DTD/entity rejection and depth/node complexity bounds.
+- Added tests for RSS normalization, Atom normalization, partial records, malformed dates, unsafe directives, complexity limits, and user-state separation.
+- Kept network retrieval, persistence, deduplication, HTML sanitization, authenticated parser/API exposure, deployment, and Stable qualification explicitly incomplete.
+
 ### Initial Development runtime
 
 - Selected Go 1.27.1 for the initial server toolchain.

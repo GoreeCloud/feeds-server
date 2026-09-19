@@ -6,9 +6,9 @@ Component: GoreeCloud Feeds Server
 Repository: GoreeCloud/feeds-server  
 Component class: Server / service  
 Lifecycle: Development  
-Implementation status: Minimal Development HTTP runtime implemented; product features remain largely planned
+Implementation status: Minimal Development HTTP runtime plus normalized feed/article model and RSS/Atom parser implemented; product features remain largely planned
 
-This specification scopes the server responsibilities derived from the governing GoreeCloud Feeds product roadmap. The current implementation is limited to Development capability discovery plus liveness/readiness endpoints.
+This specification scopes the server responsibilities derived from the governing GoreeCloud Feeds product roadmap. The current implementation includes Development capability discovery, liveness/readiness endpoints, a normalized internal feed/article model, and dependency-free parsing of caller-supplied RSS 2.x and Atom 1.x XML.
 
 ## Authority model
 
@@ -43,8 +43,12 @@ Authorization must isolate users. Sensitive operations must fail safely. Reusabl
 
 ## Current implementation decision
 
-The initial server runtime uses Go 1.27.1 and the Go standard-library `net/http` package. The shared Development API contract uses versioned HTTP/JSON described by OpenAPI 3.1 in GoreeCloud/feeds-protocol. The current Development listener defaults to loopback `127.0.0.1:8080`.
+The server runtime uses Go 1.27.1 and the Go standard library. HTTP behavior uses `net/http`; feed parsing uses `encoding/xml` without a new third-party runtime dependency. The shared Development API contract uses versioned HTTP/JSON described by OpenAPI 3.1 in GoreeCloud/feeds-protocol. The current Development listener defaults to loopback `127.0.0.1:8080`.
+
+The current normalized model introduces User, Subscription, Feed, Article, ArticleState, media/image metadata, and source metadata. Article content and per-user ArticleState are separate types so multiple users can consume the same feed/article content without sharing read/saved/favorite/read-position state.
+
+The parser currently accepts caller-supplied UTF-8 XML only. It does not retrieve URLs. It normalizes RSS 2.x and Atom 1.x core feed/article fields; preserves recoverable partial records; records warnings for non-fatal normalization failures such as malformed dates; rejects DTD/entity directives; and applies XML depth/node complexity limits. HTML sanitization, remote retrieval, persistence, deduplication, subscription ownership, and authenticated API exposure are outside this tranche.
 
 ## Open decisions
 
-Database engine, job scheduler, search backend, cache technology, feed parser strategy, authentication/session implementation, packaging format, container image, production port/hostname, and production topology remain unresolved.
+Database engine, job scheduler, search backend, cache technology, authenticated parser/API exposure, remote retrieval strategy, HTML sanitization policy, authentication/session implementation, packaging format, container image, production port/hostname, and production topology remain unresolved.

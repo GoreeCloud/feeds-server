@@ -2,17 +2,18 @@
 
 ## Current Development behavior
 
-The current Development runtime is deliberately non-data-bearing.
+The current network-visible Development runtime remains deliberately non-data-bearing.
 
 It:
 
-- does not ingest or retrieve feeds;
+- does not expose a network ingestion endpoint or retrieve remote feeds;
 - does not store user, account, feed, or article content;
 - does not authenticate users;
 - does not use cookies or sessions;
 - does not emit product telemetry;
 - does not call third-party analytics services;
-- does not make outbound feed requests; and
+- does not make outbound feed requests;
+- includes an internal parser that processes only caller-supplied XML in memory and does not persist or transmit parsed content; and
 - exposes only static non-sensitive capability metadata plus liveness/readiness responses.
 
 The Development listener binds to loopback by default.

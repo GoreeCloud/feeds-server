@@ -8,7 +8,9 @@ Current security-relevant properties verified by source/tests:
 
 - the Development listener binds to loopback by default;
 - the implemented endpoints expose only static non-sensitive capability metadata and health state;
-- no user/feed/article data is stored or processed;
+- no user/feed/article data is stored by the runtime;
+- parser input is caller-supplied in-memory XML only and is not exposed through the current HTTP surface;
+- XML DTD/entity directives are rejected and XML depth/node complexity is bounded;
 - no authentication credentials, sessions, tokens, or secrets are implemented;
 - no outbound feed retrieval occurs;
 - JSON responses use `no-store` and `X-Content-Type-Options: nosniff`; and
@@ -20,6 +22,6 @@ Do not place credentials, private keys, active tokens, restricted exploit detail
 
 ## Outstanding security boundaries
 
-Before product functionality or production exposure, implementation must isolate users; authorize account-scoped operations; use accepted GoreeCloud Identity integration; integrate Wardveil Security; fail closed on authorization/security uncertainty; protect secrets outside source control; safely process untrusted feed/article content; constrain outbound retrieval; protect administrative interfaces; apply rate/resource controls; preserve privacy-safe security evidence; and validate backup/restore/migration without weakening access control.
+Before product functionality or production exposure, implementation must isolate users; authorize account-scoped operations; use accepted GoreeCloud Identity integration; integrate Wardveil Security; fail closed on authorization/security uncertainty; protect secrets outside source control; sanitize/render untrusted feed/article content safely; constrain outbound retrieval against SSRF and unsafe redirect/destination behavior; protect administrative interfaces; apply rate/resource controls; preserve privacy-safe security evidence; and validate backup/restore/migration without weakening access control.
 
 A source commit, test pass, or deployment does not by itself establish production security acceptance.

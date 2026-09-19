@@ -13,7 +13,9 @@ The authoritative product capability scope is maintained in the governed GoreeCl
 
 ## Phase 1 — Core ingestion foundation
 
-Implement feed subscription models, retrieval scheduling, retry/backoff behavior, parsing/normalization, and initial feed/article models.
+**Partial / verified:** initial normalized User → Subscription → Feed → Article → ArticleState model is implemented, with feed/article content separated from per-user ArticleState. Dependency-free RSS 2.x and Atom 1.x parsing/normalization is implemented for caller-supplied XML with recoverable warnings and bounded XML parsing.
+
+Still incomplete: subscription persistence/ownership enforcement, network feed retrieval, scheduling, retry/backoff, conditional requests, fetch history, deduplication, persistence, HTML sanitization, authenticated ingestion/API surfaces, and production acceptance.
 
 ## Phase 2 — Persistence and processing
 

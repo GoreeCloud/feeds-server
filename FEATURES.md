@@ -10,14 +10,20 @@ Verified Development capabilities:
 - `GET /health/ready` readiness endpoint for the current dependency-free Development tranche.
 - Loopback-by-default Development listener with explicit alternate listen flag.
 - Automated formatting, vet, and race-enabled unit-test workflow.
+- Internal normalized models for User, Subscription, Feed, Article, ArticleState, source metadata, media, and images.
+- Dependency-free RSS 2.x parsing and normalization for caller-supplied XML.
+- Dependency-free Atom 1.x parsing and normalization for caller-supplied XML.
+- Recoverable parser warnings for incomplete or malformed metadata where usable feed/article content remains.
+- XML DTD/entity rejection plus parser depth/node complexity limits.
+- Explicit separation of shared feed/article content from per-user article state.
 
-No feed or user data is stored or processed by the current implementation.
+The current HTTP runtime does not retrieve feeds, accept feed XML over an API, store user/feed/article data, or expose parser output. Parser functionality exists only as an internal Development library in this tranche.
 
 ## Planned capability groups
 
 - Feed subscription persistence and management
 - Scheduled feed retrieval
-- Feed parsing and normalization
+- Feed parsing and normalization — **Partial / Development**
 - Article processing and deduplication
 - Article and metadata storage
 - Search
