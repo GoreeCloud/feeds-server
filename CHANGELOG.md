@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+### Retrieval retry/backoff Development tranche
+
+- Added configurable bounded retry attempts for transient network failures and HTTP 408/425/429/500/502/503/504 responses.
+- Added bounded exponential backoff and clamped `Retry-After` handling.
+- Added attempt-count evidence to retrieval results.
+- Kept permanent policy errors, oversized responses, unsafe redirects, and permanent HTTP failures non-retryable.
+- Hardened redirects so cross-origin transitions remove ETag/Last-Modified validators plus Authorization, Proxy-Authorization, Cookie, and Referer headers.
+- Added tests for retry sequencing, backoff bounds, `Retry-After`, permanent-failure behavior, cancellation, cross-origin header removal, and port-changing origins.
+- Kept scheduling, adaptive cadence, priority queues, fetch-history persistence, runtime retrieval wiring, authenticated APIs, deployment, and Stable qualification incomplete.
+
+
 ### Bounded feed retrieval Development tranche
 
 - Added a dependency-free internal remote-feed retrieval client using the Go standard library.
