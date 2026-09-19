@@ -16,6 +16,11 @@ Current security-relevant properties verified by source/tests:
 - deduplication URL handling rejects credential-bearing URLs and does not make network requests;
 - the PostgreSQL migration foundation contains schema only: no database credentials, active connection strings, database roles, or deployment secrets;
 - the initial migration is additive and extension-free, and automated tests reject destructive table/schema/drop/truncate/delete operations in that migration;
+- pgx v5.11.0 is pinned with module checksums and CI verifies the committed module lock;
+- database connection strings are runtime inputs and are not intentionally included in Feeds errors or logs;
+- the connection pool is bounded and uses a finite connect timeout;
+- migration application uses a transaction-scoped advisory lock plus name/SHA-256 ledger verification to reject migration-source drift;
+- PostgreSQL integration testing uses an ephemeral CI-only database and credentials, not production secrets;
 - no authentication credentials, sessions, tokens, or secrets are implemented;
 - no outbound feed retrieval occurs;
 - JSON responses use `no-store` and `X-Content-Type-Options: nosniff`; and

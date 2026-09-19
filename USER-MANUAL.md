@@ -4,7 +4,7 @@
 
 There is currently no supported GoreeCloud Feeds Server release to install or operate in production.
 
-A minimal Development executable exists for engineering validation only. It exposes capability discovery and liveness/readiness endpoints. The repository also contains an internal RSS/Atom normalization library and core feed/article models, but no user-facing or network ingestion interface exposes them. The server still does not retrieve subscribed feeds, store user data, authenticate users, synchronize clients, or provide a usable feed service.
+A minimal Development executable exists for engineering validation only. It exposes capability discovery and liveness/readiness endpoints. The repository also contains internal RSS/Atom normalization, feed/article models, conservative deduplication, and a PostgreSQL connectivity/migration layer validated in CI. None of those storage capabilities are wired into the network-visible Development server yet. The server still does not retrieve subscribed feeds, durably store product data, authenticate users, synchronize clients, or provide a usable feed service.
 
 ## Development-only run
 
@@ -26,7 +26,7 @@ curl http://127.0.0.1:8080/api/v1/capabilities
 
 ## Unsupported operational areas
 
-No supported container image, persistent database, production configuration schema, authentication setup, network feed-ingestion configuration, subscription store, migration procedure, backup/restore procedure, upgrade path, public network deployment, or Stable release exists yet.
+No supported container image, production database configuration, production database credentials/TLS policy, durable feed/article repository, authentication setup, network feed-ingestion configuration, backup/restore procedure, upgrade path, public network deployment, or Stable release exists yet.
 
 ## Intended audience
 

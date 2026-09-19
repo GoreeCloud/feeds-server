@@ -16,9 +16,9 @@ Feed parsing and normalization are partially implemented as an internal, depende
 
 Article deduplication is also partially implemented as an internal dependency-free library. The current tranche preserves the first article as canonical and recognizes duplicates only when exact source-scoped evidence agrees: normalized source identifiers, conservatively normalized URLs, or a title/publication/content fingerprint. If independent evidence points to different canonical articles, the candidate is retained rather than merged. Fuzzy similarity and cross-source collapsing are intentionally deferred.
 
-ADR-0002 selects PostgreSQL 18 for durable persistence. The repository now contains ordered embedded SQL migration source defining the initial relational boundary for users, feeds, subscriptions, articles, deduplication keys/source history, and per-user article state. No PostgreSQL driver, database connection, migration executor, credentials, persisted runtime data, or backup/restore implementation exists yet.
+ADR-0002 selects PostgreSQL 18 for durable persistence. The repository contains ordered embedded SQL migrations and now also includes a bounded pgx v5.11.0 connection-pool/migration layer. Migrations are serialized with a PostgreSQL advisory transaction lock and recorded in a checksum-verified schema ledger. This storage package is integration-tested against PostgreSQL 18.6, but the network-visible Feeds Server runtime is not yet wired to require or use a database.
 
-Feed subscription runtime persistence, network retrieval, search, synchronization, accounts/authentication, administration, notifications, backup/restore, packaging, deployment, Release Candidate, production acceptance, and Stable release remain **not** implemented.
+Durable feed/article repository queries and writes, feed subscription runtime persistence, network retrieval, search, synchronization, accounts/authentication, administration, notifications, backup/restore, packaging, deployment, Release Candidate, production acceptance, and Stable release remain **not** implemented.
 
 ## Development toolchain
 
@@ -28,10 +28,11 @@ Feed subscription runtime persistence, network retrieval, search, synchronizatio
 - Go standard-library cryptographic hashing and URL handling for conservative deduplication
 - Go standard-library testing
 - PostgreSQL 18 Development schema target with ordered SQL migrations
+- pgx v5.11.0 for PostgreSQL connectivity and bounded pooling
 - GitHub Actions validation on exact pull-request candidates
 - Development API contract version `0.1.0-dev` owned by GoreeCloud/feeds-protocol
 
-No external Go runtime dependency is used in the current server/parser/deduplication/schema-foundation tranche. PostgreSQL 18 is an accepted Development persistence target, not yet a runtime dependency.
+pgx v5.11.0 is the only new Go runtime dependency in the connectivity tranche. PostgreSQL 18.6 is exercised in CI, while the current network-visible Development server still runs without a database because durable repository wiring is a later tranche.
 
 ## Development run
 
@@ -68,7 +69,7 @@ The server remains intended to be authoritative for server-side feed ingestion, 
 
 ## Documentation
 
-See SPECIFICATIONS.md, FEATURES.md, FEATURE-ROADMAP.md, BENEFITS.md, COMPETITIVE-OBJECTIVES.md, BRANDING.md, USER-MANUAL.md, PRIVACY POLICY.md, SECURITY.md, NOTES.md, and CHANGELOG.md.
+See SPECIFICATIONS.md, FEATURES.md, FEATURE-ROADMAP.md, DEPENDENCIES.md, BENEFITS.md, COMPETITIVE-OBJECTIVES.md, BRANDING.md, USER-MANUAL.md, PRIVACY POLICY.md, SECURITY.md, NOTES.md, and CHANGELOG.md.
 
 ## Platform integration
 

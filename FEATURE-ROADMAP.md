@@ -17,11 +17,13 @@ The authoritative product capability scope is maintained in the governed GoreeCl
 
 **Partial / verified:** conservative internal article deduplication now recognizes duplicates only when source-scoped exact evidence agrees: source identifiers, conservatively normalized URLs, or title/publication/content fingerprints. Conflicting evidence fails safe by retaining the article. Fuzzy similarity and cross-source collapsing remain deferred.
 
-Still incomplete: subscription runtime persistence/ownership enforcement, network feed retrieval, scheduling, retry/backoff, conditional requests, fetch history, live durable deduplication/storage execution, HTML sanitization, authenticated ingestion/API surfaces, and production acceptance.
+Still incomplete: subscription runtime persistence/ownership enforcement, network feed retrieval, scheduling, retry/backoff, conditional requests, fetch history, durable repository/query execution, HTML sanitization, authenticated ingestion/API surfaces, and production acceptance.
 
 ## Phase 2 — Persistence and processing
 
-Implement article/feed persistence, durable deduplication indexes, search indexing, feed health, media-cache boundaries, and data migration/versioning.
+**Partial / verified:** PostgreSQL 18 schema/migration source is version-controlled. A pgx v5.11.0 storage boundary now provides bounded connectivity, ping verification, transactional migration application, advisory-lock serialization, and a checksum-verified migration ledger. Exact-candidate CI validates this layer against PostgreSQL 18.6 and verifies repeat migration application is idempotent.
+
+Still incomplete: server-runtime database wiring, durable feed/subscription/article repository queries and transactions, persisted deduplication behavior, retention execution, search indexing, feed-health persistence, media-cache storage, database-aware backup/restore, and production migration/upgrade qualification.
 
 ## Phase 3 — Protocol and synchronization
 
