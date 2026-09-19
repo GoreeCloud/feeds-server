@@ -11,6 +11,9 @@ Current security-relevant properties verified by source/tests:
 - no user/feed/article data is stored by the runtime;
 - parser input is caller-supplied in-memory XML only and is not exposed through the current HTTP surface;
 - XML DTD/entity directives are rejected and XML depth/node complexity is bounded;
+- deduplication is internal/in-memory and requires source-scoped exact evidence;
+- ambiguous deduplication evidence fails safe by retaining the candidate rather than merging it;
+- deduplication URL handling rejects credential-bearing URLs and does not make network requests;
 - no authentication credentials, sessions, tokens, or secrets are implemented;
 - no outbound feed retrieval occurs;
 - JSON responses use `no-store` and `X-Content-Type-Options: nosniff`; and

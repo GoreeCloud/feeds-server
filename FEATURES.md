@@ -16,15 +16,18 @@ Verified Development capabilities:
 - Recoverable parser warnings for incomplete or malformed metadata where usable feed/article content remains.
 - XML DTD/entity rejection plus parser depth/node complexity limits.
 - Explicit separation of shared feed/article content from per-user article state.
+- Conservative source-scoped article deduplication using exact identifiers, normalized URLs, and title/publication/content fingerprints.
+- Conflict-safe deduplication behavior that retains candidates when independent evidence points at different canonical articles.
+- Alias propagation so later publisher identifier/URL changes can still resolve to the already selected canonical article.
 
-The current HTTP runtime does not retrieve feeds, accept feed XML over an API, store user/feed/article data, or expose parser output. Parser functionality exists only as an internal Development library in this tranche.
+The current HTTP runtime does not retrieve feeds, accept feed XML over an API, store user/feed/article data, or expose parser/deduplication output. Parser and deduplication functionality exist only as internal Development libraries in this tranche.
 
 ## Planned capability groups
 
 - Feed subscription persistence and management
 - Scheduled feed retrieval
 - Feed parsing and normalization — **Partial / Development**
-- Article processing and deduplication
+- Article processing and deduplication — **Partial / Development**
 - Article and metadata storage
 - Search
 - Smart Feeds

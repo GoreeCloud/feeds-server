@@ -6,24 +6,29 @@ GoreeCloud Feeds Server is the authoritative back-end project for GoreeCloud Fee
 
 **Lifecycle:** Development.
 
-The repository contains a minimal verified Development runtime written in Go plus an internal normalized feed/article model and RSS/Atom parser. The network-visible runtime surface remains intentionally limited to:
+The repository contains a minimal verified Development runtime written in Go plus internal normalized feed/article models, RSS/Atom parsing, and conservative article deduplication. The network-visible runtime surface remains intentionally limited to:
 
 - `GET /api/v1/capabilities` — non-sensitive Development protocol/capability metadata;
 - `GET /health/live` — process liveness;
 - `GET /health/ready` — readiness for the current dependency-free Development tranche.
 
-Feed parsing and normalization are now partially implemented as an internal, dependency-free library for caller-supplied XML. The parser supports RSS 2.x and Atom 1.x normalization, recoverable warnings for incomplete metadata, XML complexity limits, and explicit separation between shared article content and per-user article state. Feed subscriptions, network retrieval, persistence, deduplication, search, synchronization, accounts, authentication, administration, notifications, backup/restore, packaging, deployment, Release Candidate, production acceptance, and Stable release remain **not** implemented.
+Feed parsing and normalization are partially implemented as an internal, dependency-free library for caller-supplied XML. The parser supports RSS 2.x and Atom 1.x normalization, recoverable warnings for incomplete metadata, XML complexity limits, and explicit separation between shared article content and per-user article state.
+
+Article deduplication is also partially implemented as an internal dependency-free library. The current tranche preserves the first article as canonical and recognizes duplicates only when exact source-scoped evidence agrees: normalized source identifiers, conservatively normalized URLs, or a title/publication/content fingerprint. If independent evidence points to different canonical articles, the candidate is retained rather than merged. Fuzzy similarity and cross-source collapsing are intentionally deferred.
+
+Feed subscriptions, network retrieval, persistence, search, synchronization, accounts, authentication, administration, notifications, backup/restore, packaging, deployment, Release Candidate, production acceptance, and Stable release remain **not** implemented.
 
 ## Development toolchain
 
 - Go 1.27.1
 - Go standard-library `net/http`
 - Go standard-library `encoding/xml` for the current RSS/Atom parser tranche
+- Go standard-library cryptographic hashing and URL handling for conservative deduplication
 - Go standard-library testing
 - GitHub Actions validation on exact pull-request candidates
 - Development API contract version `0.1.0-dev` owned by GoreeCloud/feeds-protocol
 
-No external Go runtime dependency is used in the current server/parser tranche.
+No external Go runtime dependency is used in the current server/parser/deduplication tranche.
 
 ## Development run
 
