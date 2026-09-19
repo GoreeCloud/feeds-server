@@ -17,11 +17,13 @@ The authoritative product capability scope is maintained in the governed GoreeCl
 
 **Partial / verified:** conservative internal article deduplication now recognizes duplicates only when source-scoped exact evidence agrees: source identifiers, conservatively normalized URLs, or title/publication/content fingerprints. Conflicting evidence fails safe by retaining the article. Fuzzy similarity and cross-source collapsing remain deferred.
 
-Still incomplete: subscription persistence/ownership enforcement, network feed retrieval, scheduling, retry/backoff, conditional requests, fetch history, durable deduplication indexes, persistence, HTML sanitization, authenticated ingestion/API surfaces, and production acceptance.
+Still incomplete: subscription persistence/ownership enforcement, network feed retrieval, scheduling, retry/backoff, conditional requests, fetch history, runtime/durable deduplication indexes, database connectivity, HTML sanitization, authenticated ingestion/API surfaces, and production acceptance.
 
 ## Phase 2 — Persistence and processing
 
-Implement article/feed persistence, durable deduplication indexes, search indexing, feed health, media-cache boundaries, and data migration/versioning.
+**Partial / verified schema foundation:** ADR-0002 selects PostgreSQL 18; `migrations/0001_initial.sql` defines the first additive relational schema for feeds, subscriptions, canonical articles, source-scoped deduplication aliases, retrieval/source history, user article state, categories/tags, and media/image references. Static tests verify required boundaries and reject destructive/row-order identity patterns in the initial migration.
+
+Still incomplete: PostgreSQL driver/connectivity, runtime migration execution, transactions, durable read/write repositories, live schema-version tracking, retention execution, durable deduplication behavior, search indexing, feed health persistence, media-cache storage, backup/restore, and data migration qualification.
 
 ## Phase 3 — Protocol and synchronization
 
