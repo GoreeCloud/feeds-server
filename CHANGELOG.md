@@ -2,6 +2,18 @@
 
 ## Unreleased
 
+### Bounded feed retrieval Development tranche
+
+- Added a dependency-free internal remote-feed retrieval client using the Go standard library.
+- Added HTTPS-by-default URL policy, embedded-credential rejection, and explicit private-network allowlisting.
+- Added DNS/IP destination validation that rejects a hostname when any resolved address violates destination policy, then dials validated addresses directly.
+- Disabled environment proxy inheritance and ambient proxy credential use for retrieval traffic.
+- Added redirect revalidation, five-hop redirect limit, HTTPS-to-HTTP downgrade blocking, and cross-host stripping of ETag/Last-Modified validators.
+- Added ETag/Last-Modified conditional retrieval, finite request/connect/header timeouts, bounded response bodies, and configurable bounded concurrency.
+- Added tests for unsafe URL rejection, mixed safe/blocked DNS answers, conditional 304 handling, oversized responses, metadata-address redirects, HTTPS downgrade redirects, cross-host validator minimization, and concurrency limits.
+- Kept scheduler/queue/adaptive refresh, retry/backoff, fetch-history persistence, parser/storage orchestration, runtime configuration, authenticated ingestion/API exposure, deployment, and Stable qualification incomplete.
+
+
 ### Durable PostgreSQL repository Development tranche
 
 - Added parameterized repository operations for external user identity references, feeds, subscriptions, canonical articles, and per-user article state.
