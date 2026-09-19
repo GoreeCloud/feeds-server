@@ -6,42 +6,52 @@ component:
   product_name: GoreeCloud Feeds Server
   repository: GoreeCloud/feeds-server
 
-lifecycle: planned
-version: "0.1.0-planned"
+lifecycle: development
+version: "0.1.0-dev"
 
 supported_platforms:
   - server
 
 api:
-  versions: []
-  endpoints: []
+  versions:
+    - v1
+  endpoints:
+    - name: capabilities
+      url: /api/v1/capabilities
+      purpose: Return non-sensitive Development API lifecycle and capability-negotiation metadata.
+    - name: health-live
+      url: /health/live
+      purpose: Development process liveness.
+    - name: health-ready
+      url: /health/ready
+      purpose: Development readiness for the current dependency-free runtime tranche.
 
 platform_systems:
   manager:
     result: applicable-blocked
     version: null
     evidence: [README.md, SPECIFICATIONS.md]
-    notes: Manager registration, lifecycle visibility, health/readiness publication, and accepted operational integration are not implemented.
+    notes: Health endpoints now exist, but accepted Manager registration, lifecycle visibility, and operational integration are not implemented.
   privacy_shield:
     result: applicable-blocked
     version: null
     evidence: [PRIVACY POLICY.md, SPECIFICATIONS.md]
-    notes: Planned privacy requirements exist, but no runtime Privacy Shield integration or acceptance exists.
+    notes: Current Development behavior is non-data-bearing and privacy-minimized, but no runtime Privacy Shield integration or acceptance exists.
   wardveil_security:
     result: applicable-blocked
     version: null
-    evidence: [SECURITY.md, SPECIFICATIONS.md]
-    notes: Planned security requirements exist, but no Wardveil Security runtime integration or acceptance exists.
+    evidence: [SECURITY.md, SPECIFICATIONS.md, internal/server/server.go]
+    notes: Initial safe-by-default Development HTTP behavior exists, but no Wardveil Security runtime integration or acceptance exists.
   everkeep:
     result: applicable-blocked
     version: null
     evidence: [SPECIFICATIONS.md, USER-MANUAL.md]
-    notes: Backup and restore are required by the roadmap, but no Everkeep implementation or recovery acceptance exists.
+    notes: The current runtime has no durable application state. Backup and restore become mandatory as persistence is introduced; no Everkeep implementation or recovery acceptance exists.
   glaze_ui:
     result: applicable-blocked
     version: "1.6.0"
     evidence: [README.md, BRANDING.md]
-    notes: Current Official Stable Glaze UI V1.6.0 is the target for supported Feeds administration/client surfaces, but this server repository has no accepted user-interface integration.
+    notes: Glaze UI V1.6.0 is the current target for supported Feeds administration/client surfaces, but this server runtime has no accepted user-interface integration.
   mesh:
     result: applicable-blocked
     version: null
@@ -55,7 +65,7 @@ platform_systems:
     result: applicable-blocked
     version: null
     evidence: [SPECIFICATIONS.md, SECURITY.md]
-    notes: GoreeCloud Identity is the planned identity/authentication authority, but no accepted integration exists.
+    notes: The Development capability/health endpoints intentionally require no user identity because they expose no protected data. GoreeCloud Identity remains required for future protected product APIs.
   policy:
     result: applicable-blocked
     version: null
@@ -64,27 +74,27 @@ platform_systems:
   observability:
     result: applicable-blocked
     version: null
-    evidence: [SPECIFICATIONS.md]
-    notes: No accepted GoreeCloud Observability integration exists.
+    evidence: [cmd/feeds-server/main.go, SPECIFICATIONS.md]
+    notes: Development startup/shutdown logging exists, but no accepted GoreeCloud Observability integration exists.
 
 health:
-  health_endpoint: null
-  readiness_endpoint: null
+  health_endpoint: /health/live
+  readiness_endpoint: /health/ready
 
 continuity:
   backup:
     required: true
     requirements:
-      - Define the complete persistent server backup scope before deployment qualification.
+      - Define the complete persistent server backup scope before durable application data is introduced for release qualification.
       - Integrate and validate approved Everkeep backup behavior before Release Candidate acceptance.
   restore:
     required: true
     requirements:
-      - Validate isolated clean-target restore of account, feed, article, synchronization, configuration, and required index state.
+      - Validate isolated clean-target restore after persistent account, feed, article, synchronization, configuration, or index state is introduced.
   export:
     required: true
     requirements:
-      - Provide portable exports for user-owned data without exposing reusable credentials.
+      - Provide portable exports for user-owned data before user-owned durable data is accepted for release.
   portability:
     required: true
     requirements:
@@ -96,19 +106,22 @@ compatibility:
   platform_contract: "0.4"
   requires:
     - goreecloud-platform-contract==0.4
-  provides: []
+    - goreecloud-feeds-protocol==0.1.0-dev
+  provides:
+    - goreecloud-feeds-api-v1-development
 
 evidence:
-  acceptance_tests: []
+  acceptance_tests:
+    - internal/server/server_test.go
   release: []
 
 conformance:
   status: nonconformant
   validated_at: null
-  evidence: [README.md, SPECIFICATIONS.md, FEATURES.md, SECURITY.md, PRIVACY POLICY.md]
+  evidence: [README.md, SPECIFICATIONS.md, FEATURES.md, SECURITY.md, PRIVACY POLICY.md, cmd/feeds-server/main.go, internal/server/server.go, internal/server/server_test.go]
   blockers:
-    - No server runtime, data store, API, feed retrieval, parsing, search, synchronization, administration, or packaging implementation exists.
-    - GoreeCloud Identity integration and acceptance are not established.
+    - Current Development runtime implements only capability discovery and health endpoints; feed ingestion, persistence, parsing, search, synchronization, administration, authentication, packaging, and deployment remain incomplete.
+    - GoreeCloud Identity integration and acceptance are not established for protected product APIs.
     - Wardveil Security integration and acceptance are not established.
     - Privacy Shield integration and acceptance are not established.
     - Everkeep backup/restore/recovery acceptance is not established.
