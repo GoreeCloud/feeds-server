@@ -11,8 +11,8 @@ import (
 type DuplicateReason string
 
 const (
-	DuplicateBySourceIdentifier  DuplicateReason = "source_identifier"
-	DuplicateByNormalizedURL     DuplicateReason = "normalized_url"
+	DuplicateBySourceIdentifier   DuplicateReason = "source_identifier"
+	DuplicateByNormalizedURL      DuplicateReason = "normalized_url"
 	DuplicateByContentFingerprint DuplicateReason = "content_fingerprint"
 )
 
