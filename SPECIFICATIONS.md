@@ -5,10 +5,10 @@
 Component: GoreeCloud Feeds Server  
 Repository: GoreeCloud/feeds-server  
 Component class: Server / service  
-Lifecycle: Planned  
-Implementation status: Repository documentation foundation only
+Lifecycle: Development  
+Implementation status: Minimal Development HTTP runtime implemented; product features remain largely planned
 
-This specification scopes the server responsibilities derived from the governing GoreeCloud Feeds product roadmap. It does not establish implementation.
+This specification scopes the server responsibilities derived from the governing GoreeCloud Feeds product roadmap. The current implementation is limited to Development capability discovery plus liveness/readiness endpoints.
 
 ## Authority model
 
@@ -41,6 +41,10 @@ The planned product is self-hosted and privacy-focused. Server behavior should m
 
 Authorization must isolate users. Sensitive operations must fail safely. Reusable credentials and protected secrets must remain outside ordinary source control and documentation.
 
+## Current implementation decision
+
+The initial server runtime uses Go 1.27.1 and the Go standard-library `net/http` package. The shared Development API contract uses versioned HTTP/JSON described by OpenAPI 3.1 in GoreeCloud/feeds-protocol. The current Development listener defaults to loopback `127.0.0.1:8080`.
+
 ## Open decisions
 
-No language, web framework, database engine, job scheduler, search backend, cache technology, packaging format, container image, port, hostname, API wire format, or production topology has been selected by this foundation.
+Database engine, job scheduler, search backend, cache technology, feed parser strategy, authentication/session implementation, packaging format, container image, production port/hostname, and production topology remain unresolved.

@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+### Initial Development runtime
+
+- Selected Go 1.27.1 for the initial server toolchain.
+- Added a dependency-free Go HTTP Development runtime.
+- Added `GET /api/v1/capabilities` implementing protocol `0.1.0-dev`.
+- Added liveness and readiness endpoints.
+- Added exact-candidate CI for formatting, `go vet`, and race-enabled unit tests.
+- Updated Platform Contract state from Planned to Development while retaining nonconformant release status.
+- Kept persistence, ingestion, authentication, synchronization, packaging, deployment, and Stable qualification explicitly incomplete.
+
 ### Repository foundation
 
 - Expanded the repository entry point.
