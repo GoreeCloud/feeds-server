@@ -19,8 +19,10 @@ Verified Development capabilities:
 - Conservative source-scoped article deduplication using exact identifiers, normalized URLs, and title/publication/content fingerprints.
 - Conflict-safe deduplication behavior that retains candidates when independent evidence points at different canonical articles.
 - Alias propagation so later publisher identifier/URL changes can still resolve to the already selected canonical article.
+- PostgreSQL 18-compatible additive migration foundation for feeds, subscriptions, articles, deduplication aliases, source history, per-user state, categories/tags, and media/image references.
+- Static migration tests that verify required storage boundaries, application-owned textual identifiers, additive first-migration behavior, and separation of external identity references from canonical article content.
 
-The current HTTP runtime does not retrieve feeds, accept feed XML over an API, store user/feed/article data, or expose parser/deduplication output. Parser and deduplication functionality exist only as internal Development libraries in this tranche.
+The current HTTP runtime does not retrieve feeds, accept feed XML over an API, connect to PostgreSQL, store user/feed/article data, or expose parser/deduplication output. Parser/deduplication code and the migration schema exist as Development foundations only.
 
 ## Planned capability groups
 
@@ -28,7 +30,7 @@ The current HTTP runtime does not retrieve feeds, accept feed XML over an API, s
 - Scheduled feed retrieval
 - Feed parsing and normalization — **Partial / Development**
 - Article processing and deduplication — **Partial / Development**
-- Article and metadata storage
+- Article and metadata storage — **Partial / Development schema foundation**
 - Search
 - Smart Feeds
 - Rules engine
