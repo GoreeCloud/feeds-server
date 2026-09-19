@@ -181,7 +181,7 @@ func TestRepositoryRejectsIdentityAndDeduplicationRebinding(t *testing.T) {
 	now := time.Date(2026, 9, 19, 20, 0, 0, 0, time.UTC)
 	for _, id := range []feed.ID{"guard-feed-a", "guard-feed-b"} {
 		if err := store.UpsertFeed(ctx, FeedWrite{
-			Feed: feed.Feed{ID: id, URL: "https://example.test/" + string(id), Source: feed.SourceInfo{Format: "rss"}},
+			Feed:          feed.Feed{ID: id, URL: "https://example.test/" + string(id), Source: feed.SourceInfo{Format: "rss"}},
 			NormalizedURL: "https://example.test/" + string(id),
 			SeenAt:        now,
 		}); err != nil {
