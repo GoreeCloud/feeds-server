@@ -9,6 +9,7 @@
 - Core normalized User, Subscription, Feed, Article, and ArticleState models are implemented.
 - Dependency-free RSS 2.x and Atom 1.x parsing/normalization is implemented for caller-supplied XML with bounded parsing and recoverable warnings.
 - Conservative source-scoped article deduplication is implemented in memory using identifiers, normalized URLs, and title/publication/content fingerprints, with ambiguous evidence retained rather than merged.
+- The internal remote-feed retrieval client now includes bounded concurrency, conditional requests, destination/redirect SSRF controls, bounded transient retry/backoff, `Retry-After` clamping, and cross-origin privacy header stripping.
 - ADR-0002 selects PostgreSQL 18 as the Development persistence target. Ordered migrations, pgx v5.11.0 bounded connectivity, transactional migration application, advisory locking, checksum-ledger verification, and durable core repository transactions are implemented and validated against PostgreSQL 18.6 in CI.
 - A bounded internal remote-feed retrieval client is implemented with explicit destination policy, DNS/IP validation, redirect controls, conditional retrieval, resource limits, and no third-party runtime dependency.
 - Development API contract is `0.1.0-dev` and owned by GoreeCloud/feeds-protocol.
