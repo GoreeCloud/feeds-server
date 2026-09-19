@@ -27,7 +27,13 @@ Current security-relevant properties verified by source/tests:
 - source-scoped deduplication keys and source-history IDs cannot be silently reassigned to another article; conflicting article transactions roll back;
 - unsupported article metadata collections are rejected rather than silently discarded;
 - no authentication credentials, sessions, tokens, or secrets are implemented;
-- no outbound feed retrieval occurs;
+- the network-visible server does not invoke outbound feed retrieval;
+- the internal retrieval client defaults to HTTPS and rejects URL-embedded credentials;
+- private, loopback, link-local, carrier-grade NAT, documentation, benchmark, reserved, and other special-use destinations are denied unless an operator explicitly allowlists the network;
+- every DNS answer for a retrieval hostname must satisfy destination policy before any connection is attempted, reducing DNS-rebinding and mixed-answer SSRF exposure;
+- environment proxy inheritance is disabled for retrieval transport so local proxy configuration cannot silently redirect feed traffic or supply ambient credentials;
+- redirect targets are revalidated on every hop, redirect count is bounded, HTTPS-to-HTTP downgrade redirects are blocked, and cross-host redirects drop ETag/Last-Modified validators;
+- retrieval uses TLS 1.2 or later for HTTPS, bounded connect/request/header timeouts, bounded response-body size, and bounded concurrency;
 - JSON responses use `no-store` and `X-Content-Type-Options: nosniff`; and
 - unsupported HTTP methods on the capability path are rejected by the method-specific router.
 
@@ -37,6 +43,6 @@ Do not place credentials, private keys, active tokens, restricted exploit detail
 
 ## Outstanding security boundaries
 
-Before product functionality or production exposure, implementation must isolate users; authorize account-scoped operations; use accepted GoreeCloud Identity integration; integrate Wardveil Security; fail closed on authorization/security uncertainty; protect secrets outside source control; sanitize/render untrusted feed/article content safely; constrain outbound retrieval against SSRF and unsafe redirect/destination behavior; protect administrative interfaces; apply rate/resource controls; preserve privacy-safe security evidence; and validate backup/restore/migration without weakening access control.
+Before product functionality or production exposure, implementation must isolate users; authorize account-scoped operations; use accepted GoreeCloud Identity integration; integrate Wardveil Security; fail closed on authorization/security uncertainty; protect secrets outside source control; sanitize/render untrusted feed/article content safely; preserve the retrieval SSRF/redirect/destination controls through scheduler/runtime wiring and operator-configurable allowlists; define bounded retry/backoff and queue behavior; protect administrative interfaces; apply rate/resource controls; preserve privacy-safe security evidence; and validate backup/restore/migration without weakening access control.
 
 A source commit, test pass, or deployment does not by itself establish production security acceptance.
