@@ -40,13 +40,13 @@ platform_systems:
   wardveil_security:
     result: applicable-blocked
     version: null
-    evidence: [SECURITY.md, SPECIFICATIONS.md, internal/server/server.go, internal/feed/parser.go, internal/feed/parser_test.go, internal/feed/dedup.go, internal/feed/dedup_test.go]
+    evidence: [SECURITY.md, SPECIFICATIONS.md, internal/server/server.go, internal/feed/parser.go, internal/feed/parser_test.go, internal/feed/dedup.go, internal/feed/dedup_test.go, migrations/0001_initial.sql, internal/storage/migration_test.go, STORAGE.md]
     notes: Initial safe-by-default Development HTTP behavior, bounded XML parsing controls, and conflict-safe conservative deduplication exist, but no Wardveil Security runtime integration or acceptance exists.
   everkeep:
     result: applicable-blocked
     version: null
     evidence: [SPECIFICATIONS.md, USER-MANUAL.md]
-    notes: The current runtime has no durable application state. Backup and restore become mandatory as persistence is introduced; no Everkeep implementation or recovery acceptance exists.
+    notes: A PostgreSQL schema/migration foundation now exists but is not connected or applied by the runtime. Backup and restore become mandatory once durable data is written; no Everkeep implementation or recovery acceptance exists.
   glaze_ui:
     result: applicable-blocked
     version: "1.6.0"
@@ -115,6 +115,7 @@ evidence:
     - internal/server/server_test.go
     - internal/feed/parser_test.go
     - internal/feed/dedup_test.go
+    - internal/storage/migration_test.go
   release: []
 
 conformance:
@@ -122,7 +123,7 @@ conformance:
   validated_at: null
   evidence: [README.md, SPECIFICATIONS.md, FEATURES.md, SECURITY.md, PRIVACY POLICY.md, cmd/feeds-server/main.go, internal/server/server.go, internal/server/server_test.go, internal/feed/model.go, internal/feed/parser.go, internal/feed/parser_test.go, internal/feed/dedup.go, internal/feed/dedup_test.go]
   blockers:
-    - Current Development runtime implements capability discovery and health endpoints; internal feed/article models and RSS/Atom parsing are partial Development capabilities. Network retrieval/ingestion, persistence, durable deduplication indexes, search, synchronization, administration, authentication, packaging, and deployment remain incomplete.
+    - Current Development runtime implements capability discovery and health endpoints; internal feed/article models and RSS/Atom parsing are partial Development capabilities. Network retrieval/ingestion, database connectivity and runtime persistence, durable deduplication execution, search, synchronization, administration, authentication, packaging, and deployment remain incomplete.
     - GoreeCloud Identity integration and acceptance are not established for protected product APIs.
     - Wardveil Security integration and acceptance are not established.
     - Privacy Shield integration and acceptance are not established.
