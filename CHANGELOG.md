@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+### Durable PostgreSQL repository Development tranche
+
+- Added parameterized repository operations for external user identity references, feeds, subscriptions, canonical articles, and per-user article state.
+- Added transactional article writes that persist canonical article fields, source-scoped deduplication keys, and source-history records together.
+- Added conflict guards that reject user-identity rebinding, article-ID/feed rebinding, deduplication-key reassignment, and source-history-ID reassignment.
+- Added core article and article-state readback.
+- Added fail-closed rejection of categories, tags, media, and images until a later schema migration can preserve them.
+- Added PostgreSQL 18.6 integration tests for durable writes/readback, retrieval history, identity keys, rollback behavior, and independent user article state.
+- Kept server-runtime database wiring, full subscription settings, metadata/media schema expansion, retention execution, backup/restore, authenticated APIs, deployment, and Stable qualification incomplete.
+
+
 ### PostgreSQL connectivity and migration-execution Development tranche
 
 - Added pgx v5.11.0 as the pinned PostgreSQL Go dependency.
