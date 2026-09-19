@@ -236,7 +236,6 @@ func TestConcurrencyIsBounded(t *testing.T) {
 	}
 }
 
-
 func TestRetryableStatusUsesBoundedBackoff(t *testing.T) {
 	var requests int32
 	var delays []time.Duration
@@ -394,13 +393,22 @@ func TestCancelledContextStopsRetry(t *testing.T) {
 
 func TestParseRetryAfter(t *testing.T) {
 	now := time.Date(2026, 9, 19, 20, 0, 0, 0, time.UTC)
-	if got := parseRetryAfter("3", now); got != 3*time.Second {
+	if got := parseRetryAfter("3", now, 10*time.Second); got != 3*time.Second {
 		t.Fatalf("seconds Retry-After = %v", got)
 	}
-	if got := parseRetryAfter("Sat, 19 Sep 2026 20:00:05 GMT", now); got != 5*time.Second {
+	if got := parseRetryAfter("120", now, 25*time.Millisecond); got != 25*time.Millisecond {
+		t.Fatalf("bounded seconds Retry-After = %v", got)
+	}
+	if got := parseRetryAfter("9223372036854775807", now, 25*time.Millisecond); got != 25*time.Millisecond {
+		t.Fatalf("large seconds Retry-After = %v", got)
+	}
+	if got := parseRetryAfter("Sat, 19 Sep 2026 20:00:05 GMT", now, 10*time.Second); got != 5*time.Second {
 		t.Fatalf("date Retry-After = %v", got)
 	}
-	if got := parseRetryAfter("not-valid", now); got != -1 {
+	if got := parseRetryAfter("Sat, 19 Sep 2026 20:02:00 GMT", now, 25*time.Millisecond); got != 25*time.Millisecond {
+		t.Fatalf("bounded date Retry-After = %v", got)
+	}
+	if got := parseRetryAfter("not-valid", now, 10*time.Second); got != -1 {
 		t.Fatalf("invalid Retry-After = %v", got)
 	}
 }
