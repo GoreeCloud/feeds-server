@@ -57,22 +57,22 @@ type Image struct {
 
 // Article contains feed-owned normalized article data.
 type Article struct {
-	ID           ID
-	FeedID       ID
-	Identifier   string
-	URL          string
-	Title        string
-	Author       string
-	PublishedAt  *time.Time
-	UpdatedAt    *time.Time
-	Summary      string
-	Content      string
-	Categories   []string
-	Tags         []string
-	Media        []Media
-	Images       []Image
-	Language     string
-	Source       SourceInfo
+	ID          ID
+	FeedID      ID
+	Identifier  string
+	URL         string
+	Title       string
+	Author      string
+	PublishedAt *time.Time
+	UpdatedAt   *time.Time
+	Summary     string
+	Content     string
+	Categories  []string
+	Tags        []string
+	Media       []Media
+	Images      []Image
+	Language    string
+	Source      SourceInfo
 }
 
 // ArticleState is deliberately separate from Article so multiple users can
