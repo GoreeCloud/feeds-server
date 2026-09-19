@@ -34,6 +34,9 @@ Current security-relevant properties verified by source/tests:
 - environment proxy inheritance is disabled for retrieval transport so local proxy configuration cannot silently redirect feed traffic or supply ambient credentials;
 - redirect targets are revalidated on every hop, redirect count is bounded, HTTPS-to-HTTP downgrade redirects are blocked, and cross-host redirects drop ETag/Last-Modified validators;
 - retrieval uses TLS 1.2 or later for HTTPS, bounded connect/request/header timeouts, bounded response-body size, and bounded concurrency;
+- transient retrieval failures use a bounded configurable attempt count and exponential backoff; `Retry-After` is clamped to the configured maximum rather than trusted as an unbounded delay;
+- permanent policy errors, oversized responses, blocked/downgrade redirects, and non-retryable HTTP failures fail without retry amplification;
+- cross-origin redirects remove conditional validators, Authorization, Proxy-Authorization, Cookie, and Referer headers before continuation;
 - JSON responses use `no-store` and `X-Content-Type-Options: nosniff`; and
 - unsupported HTTP methods on the capability path are rejected by the method-specific router.
 
@@ -43,6 +46,6 @@ Do not place credentials, private keys, active tokens, restricted exploit detail
 
 ## Outstanding security boundaries
 
-Before product functionality or production exposure, implementation must isolate users; authorize account-scoped operations; use accepted GoreeCloud Identity integration; integrate Wardveil Security; fail closed on authorization/security uncertainty; protect secrets outside source control; sanitize/render untrusted feed/article content safely; preserve the retrieval SSRF/redirect/destination controls through scheduler/runtime wiring and operator-configurable allowlists; define bounded retry/backoff and queue behavior; protect administrative interfaces; apply rate/resource controls; preserve privacy-safe security evidence; and validate backup/restore/migration without weakening access control.
+Before product functionality or production exposure, implementation must isolate users; authorize account-scoped operations; use accepted GoreeCloud Identity integration; integrate Wardveil Security; fail closed on authorization/security uncertainty; protect secrets outside source control; sanitize/render untrusted feed/article content safely; preserve the retrieval SSRF/redirect/destination controls through scheduler/runtime wiring and operator-configurable allowlists; preserve bounded retry/backoff behavior through scheduler/runtime wiring and define queue/adaptive-refresh/priority behavior; protect administrative interfaces; apply rate/resource controls; preserve privacy-safe security evidence; and validate backup/restore/migration without weakening access control.
 
 A source commit, test pass, or deployment does not by itself establish production security acceptance.

@@ -122,6 +122,7 @@ evidence:
     - internal/feed/parser_test.go
     - internal/feed/dedup_test.go
     - internal/retrieval/client_test.go
+    - internal/retrieval/client_test.go
     - internal/storage/postgres/migrations_test.go
     - internal/storage/postgres/store_test.go
     - internal/storage/postgres/repository_test.go

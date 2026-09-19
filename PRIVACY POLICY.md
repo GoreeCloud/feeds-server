@@ -15,7 +15,7 @@ It:
 - does not make outbound feed requests from the network-visible Development server runtime;
 - includes an internal parser that processes only caller-supplied XML in memory and does not persist or transmit parsed content;
 - includes internal in-memory deduplication that processes only normalized article metadata/content supplied by the caller and does not persist or transmit it;
-- includes an internal retrieval client that can contact a configured feed origin only when explicitly invoked; it sends no user credentials, ignores environment proxies, does not follow HTTPS-to-HTTP downgrade redirects, and strips ETag/Last-Modified validators on cross-host redirects;
+- includes an internal retrieval client that can contact a configured feed origin only when explicitly invoked; it sends no user credentials, ignores environment proxies, does not follow HTTPS-to-HTTP downgrade redirects, strips ETag/Last-Modified plus ambient credential/referrer headers on cross-origin redirects, and uses bounded transient retries;
 - bounds retrieval response size, time, redirect count, and concurrency so remote origins cannot cause unbounded resource consumption through the retrieval primitive;
 - contains a PostgreSQL schema, connectivity/migration layer, and internal durable repository methods for the supported core records; the network-visible server runtime still does not invoke those methods;
 - core persistence keeps shared feed/article content separate from user-owned subscription/article state;
