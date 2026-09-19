@@ -21,6 +21,11 @@ Current security-relevant properties verified by source/tests:
 - the connection pool is bounded and uses a finite connect timeout;
 - migration application uses a transaction-scoped advisory lock plus name/SHA-256 ledger verification to reject migration-source drift;
 - PostgreSQL integration testing uses an ephemeral CI-only database and credentials, not production secrets;
+- repository writes use parameterized queries and transaction boundaries rather than string-built SQL;
+- user IDs cannot be silently rebound to a different external identity subject;
+- article IDs cannot be silently rebound to another feed;
+- source-scoped deduplication keys and source-history IDs cannot be silently reassigned to another article; conflicting article transactions roll back;
+- unsupported article metadata collections are rejected rather than silently discarded;
 - no authentication credentials, sessions, tokens, or secrets are implemented;
 - no outbound feed retrieval occurs;
 - JSON responses use `no-store` and `X-Content-Type-Options: nosniff`; and
