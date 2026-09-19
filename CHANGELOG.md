@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+### PostgreSQL schema/migration Development tranche
+
+- Adopted the ADR-0002 PostgreSQL 18 Development persistence boundary.
+- Added an additive version-controlled `0001_initial.sql` migration under the server-owned PostgreSQL storage package.
+- Added initial relational tables for users, feeds, subscriptions, articles, persistent deduplication identity keys, article source history, and per-user article state.
+- Preserved the shared-content/per-user-state separation and added explicit preserved-state/retention support.
+- Added foreign keys, checks, and indexes for referential integrity, deduplication aliases, retrieval/source history, retention eligibility, unread state, and saved/favorite/preserved state.
+- Added embedded migration discovery with strict ordered/contiguous filename validation.
+- Added tests for migration order, required schema boundaries, user-state separation, and additive/extension-free initial migration behavior.
+- Added no PostgreSQL driver, credentials, database connection, runtime migration executor, live persistence, deployment, or Stable claim.
+
 ### Article deduplication Development tranche
 
 - Added dependency-free in-memory article deduplication.

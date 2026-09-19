@@ -14,6 +14,8 @@ Current security-relevant properties verified by source/tests:
 - deduplication is internal/in-memory and requires source-scoped exact evidence;
 - ambiguous deduplication evidence fails safe by retaining the candidate rather than merging it;
 - deduplication URL handling rejects credential-bearing URLs and does not make network requests;
+- the PostgreSQL migration foundation contains schema only: no database credentials, active connection strings, database roles, or deployment secrets;
+- the initial migration is additive and extension-free, and automated tests reject destructive table/schema/drop/truncate/delete operations in that migration;
 - no authentication credentials, sessions, tokens, or secrets are implemented;
 - no outbound feed retrieval occurs;
 - JSON responses use `no-store` and `X-Content-Type-Options: nosniff`; and

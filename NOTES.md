@@ -9,9 +9,10 @@
 - Core normalized User, Subscription, Feed, Article, and ArticleState models are implemented.
 - Dependency-free RSS 2.x and Atom 1.x parsing/normalization is implemented for caller-supplied XML with bounded parsing and recoverable warnings.
 - Conservative source-scoped article deduplication is implemented in memory using identifiers, normalized URLs, and title/publication/content fingerprints, with ambiguous evidence retained rather than merged.
+- ADR-0002 selects PostgreSQL 18 as the Development persistence target. An ordered additive initial SQL migration plus embedded migration discovery/validation is implemented, but no database-connected runtime exists.
 - Development API contract is `0.1.0-dev` and owned by GoreeCloud/feeds-protocol.
 - Implemented routes are `GET /api/v1/capabilities`, `GET /health/live`, and `GET /health/ready`.
-- No persistent datastore, network feed retrieval/ingestion service, authenticated parser/API exposure, synchronization, package, deployment, or release exists.
+- No live persistent datastore connection, migration executor, network feed retrieval/ingestion service, authenticated parser/API exposure, synchronization, package, deployment, or release exists.
 
 ## Governing relationships
 
@@ -23,4 +24,4 @@
 
 ## Pending technical decisions
 
-Persistent database/storage and durable deduplication model; search implementation; scheduling/background jobs; remote retrieval strategy; HTML sanitization policy; subscription ownership/persistence; authentication/session integration; packaging/containerization; deployment topology; backup/restore mechanics; and production network configuration.
+PostgreSQL driver/connectivity, migration execution and transactional storage layer; search implementation; scheduling/background jobs; remote retrieval strategy; HTML sanitization policy; subscription ownership/persistence; authentication/session integration; packaging/containerization; deployment topology; backup/restore mechanics; and production network configuration.

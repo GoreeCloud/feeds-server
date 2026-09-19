@@ -6,9 +6,9 @@ Component: GoreeCloud Feeds Server
 Repository: GoreeCloud/feeds-server  
 Component class: Server / service  
 Lifecycle: Development  
-Implementation status: Minimal Development HTTP runtime plus normalized feed/article model, RSS/Atom parser, and conservative in-memory article deduplication implemented; product features remain largely planned
+Implementation status: Minimal Development HTTP runtime plus normalized feed/article model, RSS/Atom parser, conservative in-memory deduplication, and PostgreSQL schema/migration foundation implemented; live persistence remains unimplemented
 
-This specification scopes the server responsibilities derived from the governing GoreeCloud Feeds product roadmap. The current implementation includes Development capability discovery, liveness/readiness endpoints, a normalized internal feed/article model, dependency-free parsing of caller-supplied RSS 2.x and Atom 1.x XML, and bounded in-memory article deduplication.
+This specification scopes the server responsibilities derived from the governing GoreeCloud Feeds product roadmap. The current implementation includes Development capability discovery, liveness/readiness endpoints, a normalized internal feed/article model, dependency-free parsing of caller-supplied RSS 2.x and Atom 1.x XML, bounded in-memory article deduplication, and an ordered PostgreSQL 18 schema/migration foundation.
 
 ## Authority model
 
@@ -49,7 +49,7 @@ The current normalized model introduces User, Subscription, Feed, Article, Artic
 
 The parser currently accepts caller-supplied UTF-8 XML only. It does not retrieve URLs. It normalizes RSS 2.x and Atom 1.x core feed/article fields; preserves recoverable partial records; records warnings for non-fatal normalization failures such as malformed dates; rejects DTD/entity directives; and applies XML depth/node complexity limits. HTML sanitization, remote retrieval, persistence, subscription ownership, and authenticated API exposure are outside this tranche.
 
-The current deduplication implementation is internal and in-memory. It requires a source scope derived from FeedID or Source.URL and uses only exact, explainable signals: source-scoped identifiers, conservatively normalized URLs, and a SHA-256 fingerprint over normalized title, author, publication time, and content/summary. URL normalization lowercases scheme/host, removes fragments and default ports, preserves path/query semantics, and deterministically orders query parameters. Duplicate aliases are registered to the first canonical article so later identifier/URL changes can still resolve. If separate signals point to different canonical articles, no merge occurs. Fuzzy content similarity, cross-source collapsing, persistent deduplication indexes, and merge/reconciliation of conflicting article bodies remain outside this tranche.
+The current deduplication implementation is internal and in-memory. It requires a source scope derived from FeedID or Source.URL and uses only exact, explainable signals: source-scoped identifiers, conservatively normalized URLs, and a SHA-256 fingerprint over normalized title, author, publication time, and content/summary. URL normalization lowercases scheme/host, removes fragments and default ports, preserves path/query semantics, and deterministically orders query parameters. Duplicate aliases are registered to the first canonical article so later identifier/URL changes can still resolve. If separate signals point to different canonical articles, no merge occurs. Fuzzy content similarity, cross-source collapsing, and merge/reconciliation of conflicting article bodies remain outside this tranche. The initial PostgreSQL migration now defines durable identity-key/source-history structures, but they are not used by the runtime because database connectivity is not implemented.
 
 ## Open decisions
 
