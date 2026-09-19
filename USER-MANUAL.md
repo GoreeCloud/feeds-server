@@ -2,16 +2,32 @@
 
 ## Current availability
 
-There is currently no supported GoreeCloud Feeds Server release to install or operate.
+There is currently no supported GoreeCloud Feeds Server release to install or operate in production.
 
-No verified executable, container image, package, port, database, configuration schema, environment-variable set, deployment command, migration procedure, backup procedure, or upgrade path exists in this repository yet.
+A minimal Development executable now exists for engineering validation only. It exposes capability discovery and liveness/readiness endpoints and does not ingest feeds, store user data, authenticate users, synchronize clients, or provide a usable feed service.
+
+## Development-only run
+
+With Go 1.27.1:
+
+```sh
+go run ./cmd/feeds-server
+```
+
+The runtime binds to `127.0.0.1:8080` by default. This loopback Development listener is not a production deployment configuration.
+
+Available Development checks:
+
+```sh
+curl http://127.0.0.1:8080/health/live
+curl http://127.0.0.1:8080/health/ready
+curl http://127.0.0.1:8080/api/v1/capabilities
+```
+
+## Unsupported operational areas
+
+No supported container image, persistent database, production configuration schema, authentication setup, feed-ingestion configuration, migration procedure, backup/restore procedure, upgrade path, public network deployment, or Stable release exists yet.
 
 ## Intended audience
 
-When implementation exists, this manual is intended for self-hosting administrators who deploy and maintain GoreeCloud Feeds Server.
-
-## Planned operational areas
-
-Future revisions should document, only after implementation is verified: installation, initial configuration, identity/account setup, feed retrieval configuration, storage/search configuration, backups and restore, upgrades/migrations, health/diagnostics, client connectivity, security/privacy settings, and troubleshooting.
-
-Do not infer operational commands from roadmap or placeholder documentation.
+This manual currently supports developers validating the first server foundation. It will become the self-hosting administrator manual only after the necessary operational capabilities are implemented and accepted.
