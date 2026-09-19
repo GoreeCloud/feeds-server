@@ -46,7 +46,7 @@ platform_systems:
     result: applicable-blocked
     version: null
     evidence: [SPECIFICATIONS.md, USER-MANUAL.md]
-    notes: PostgreSQL schema plus connectivity/migration application are implemented and CI-validated, but the network server has no durable product repository/data path. Database-aware backup and restore remain mandatory before persisted data can qualify for release; no Everkeep implementation or recovery acceptance exists.
+    notes: PostgreSQL schema, connectivity/migration application, and durable core repository transactions are implemented and CI-validated, but the network server is not wired to those storage paths. Database-aware backup and restore remain mandatory before persisted data can qualify for release; no Everkeep implementation or recovery acceptance exists.
   glaze_ui:
     result: applicable-blocked
     version: "1.6.0"
@@ -123,14 +123,15 @@ evidence:
     - internal/feed/dedup_test.go
     - internal/storage/postgres/migrations_test.go
     - internal/storage/postgres/store_test.go
+    - internal/storage/postgres/repository_test.go
   release: []
 
 conformance:
   status: nonconformant
   validated_at: null
-  evidence: [README.md, SPECIFICATIONS.md, FEATURES.md, SECURITY.md, PRIVACY POLICY.md, DEPENDENCIES.md, cmd/feeds-server/main.go, internal/server/server.go, internal/server/server_test.go, internal/feed/model.go, internal/feed/parser.go, internal/feed/parser_test.go, internal/feed/dedup.go, internal/feed/dedup_test.go, internal/storage/postgres/migrations.go, internal/storage/postgres/migrations_test.go, internal/storage/postgres/store.go, internal/storage/postgres/apply.go, internal/storage/postgres/store_test.go]
+  evidence: [README.md, SPECIFICATIONS.md, FEATURES.md, SECURITY.md, PRIVACY POLICY.md, DEPENDENCIES.md, cmd/feeds-server/main.go, internal/server/server.go, internal/server/server_test.go, internal/feed/model.go, internal/feed/parser.go, internal/feed/parser_test.go, internal/feed/dedup.go, internal/feed/dedup_test.go, internal/storage/postgres/migrations.go, internal/storage/postgres/migrations_test.go, internal/storage/postgres/store.go, internal/storage/postgres/apply.go, internal/storage/postgres/store_test.go, internal/storage/postgres/repository.go, internal/storage/postgres/repository_test.go]
   blockers:
-    - Current Development runtime implements capability discovery and health endpoints; internal feed/article models and RSS/Atom parsing are partial Development capabilities. Network retrieval/ingestion, server-runtime PostgreSQL wiring and durable product repositories, search, synchronization, administration, authentication, packaging, and deployment remain incomplete.
+    - Current Development runtime implements capability discovery and health endpoints; internal feed/article models and RSS/Atom parsing are partial Development capabilities. Network retrieval/ingestion, server-runtime PostgreSQL wiring, complete metadata/subscription persistence, search, synchronization, administration, authentication, packaging, and deployment remain incomplete.
     - GoreeCloud Identity integration and acceptance are not established for protected product APIs.
     - Wardveil Security integration and acceptance are not established.
     - Privacy Shield integration and acceptance are not established.
